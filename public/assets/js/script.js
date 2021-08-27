@@ -1,9 +1,11 @@
-let validator = {
+const validator = {
 	handleSubmit: (event) => {
 		event.preventDefault();
 
 		let send = true;
 		let inputs = form.querySelectorAll('input');
+
+		validator.clearErrors();
 
 		for(let i = 0; i < inputs.length; i++) {
 			let input = inputs[i];
@@ -11,7 +13,7 @@ let validator = {
 
 			if (check !== true) {
 				send = false;
-				console.log(check)
+				validator.showError(input, check);
 			}
 		}
 
@@ -25,21 +27,38 @@ let validator = {
 		if (rules !== null) {
 			rules = rules.split(',');
 			for (let j in rules) {
-				let ruleDetails = rules[j].split('/');
+				let ruleDetails = rules[j].split('=');
 				switch(ruleDetails[0]) {
 					case 'required':
-						if (input.value === '') {
-							return 'Campo invalido';
+						if (input.value == '') {
+							return 'Blank camp';
 						}
-						break;
-					case 'min':
-
-						break;
+					break;
 				}
 			}
+		}
+
+		return true;
+	},
+	showError: (input, error) => {
+		input.style.borderColor = '#F00';
+		let errorElement = document.createElement('div');
+		errorElement.classList.add('error');
+		errorElement.innerHTML = error; 
+		input.parentElement.insertBefore(errorElement, input.nextElementSibling);
+	},
+	clearErrors: () => {
+		let inputs = form.querySelectorAll('input');
+		for (let i = 0; i < errElements.length; i++) {
+			inputs[i].style = '';
+		}
+
+		let errElements = document.querySelectorAll('.error');
+		for (let i = 0; i < errElements.length; i++) {
+			errElements[i].remove();
 		}
 	}
 };
 
-let form = document.querySelector('.validator');
+const form = document.querySelector('.validator');
 form.addEventListener('submit', validator.handleSubmit);
