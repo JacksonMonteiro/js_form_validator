@@ -34,6 +34,19 @@ const validator = {
 							return 'Blank camp';
 						}
 					break;
+					case 'min':
+						if (input.value.length < ruleDetails[1]) {
+							return `Must have min ${ruleDetails[1]} caracters`;
+						}
+					break;
+					case 'email':
+						if (input.value !== '') {
+							let regex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+							if (regex.test(input.value.toLowerCase())) {
+								return 'Invalid E-mail';
+							}
+						}
+					break;
 				}
 			}
 		}
@@ -49,7 +62,7 @@ const validator = {
 	},
 	clearErrors: () => {
 		let inputs = form.querySelectorAll('input');
-		for (let i = 0; i < errElements.length; i++) {
+		for (let i = 0; i < inputs.length; i++) {
 			inputs[i].style = '';
 		}
 
